@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "118587765859",
+    "firebase_url": "https://yuhanmarket.firebaseio.com",
+    "project_id": "yuhanmarket",
+    "storage_bucket": "yuhanmarket.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118587765859:android:550e3039cb0a748031f456",
+        "android_client_info": {
+          "package_name": "com.example.yuhanmarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "118587765859-rdc5hmvqjo503n9a3m5ddhj0l7pg05pi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yuhanmarket",
+            "certificate_hash": "688f406ae0ec7233b5369834e9a86471ec38fe3b"
+          }
+        },
+        {
+          "client_id": "118587765859-4vcbr8pv732tb0sq536dfh23opub0ps1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqM3cb0yjbMnYvczOrSRHK346SOVdMH3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "118587765859-4vcbr8pv732tb0sq536dfh23opub0ps1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

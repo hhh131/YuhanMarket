@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">YuhanMarket</string>
+    <string name="title_activity_tap">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_friend">Chat</string>
+    <string name="title_Profile">My</string>
 </resources>
