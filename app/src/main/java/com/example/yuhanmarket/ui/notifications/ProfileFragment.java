@@ -1,9 +1,12 @@
 package com.example.yuhanmarket.ui.notifications;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.yuhanmarket.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,7 +43,8 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel profileViewModel;
     private StorageReference mStorageRef;
     ImageView UserImg;
-
+    String UserId;
+    File localFile;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -56,6 +61,9 @@ public class ProfileFragment extends Fragment {
             }
         });*/
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shard",Context.MODE_PRIVATE);
+        UserId= sharedPreferences.getString("UserId","");
+        Log.e("asd",UserId);
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         if(ContextCompat.checkSelfPermission(getActivity(),
@@ -76,10 +84,6 @@ public class ProfileFragment extends Fragment {
         }
 
 
-
-
-
-
          UserImg = root.findViewById(R.id.UserImg);
 
         UserImg.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +93,33 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(intent,REQUEST_IMAGE_CODE);
             }
         });
+         localFile = null;
+        try {
+            localFile = File.createTempFile("images", "jpg");
+            StorageReference riversRef = mStorageRef.child("users").child(UserId).child("profile.jpg");
+            riversRef.getFile(localFile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            // Successfully downloaded data to local file
+                            // ...
+                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            UserImg.setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle failed download
+                    // ...
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
         return root;
     }
 
@@ -107,7 +138,7 @@ public class ProfileFragment extends Fragment {
                 e.printStackTrace();
             }
             //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-            StorageReference riversRef = mStorageRef.child("images/rivers.jpg");
+            StorageReference riversRef = mStorageRef.child("users").child(UserId).child("profile.jpg");
 
             riversRef.putFile(image)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
