@@ -1,20 +1,21 @@
-package com.example.yuhanmarket.UserPack;
+package com.example.yuhanmarket.ui.ChatListPack;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.yuhanmarket.ChatPack.Chat;
 import com.example.yuhanmarket.R;
 
 import java.util.ArrayList;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> {
-    private ArrayList<User> mDataset;
+public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyViewHolder> {
+    private ArrayList<ChatListVO> mDataset;
     String MyId;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -23,9 +24,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
         public ImageView ivUser;
         public MyViewHolder(View v) {
             super(v);
+
             textView = v.findViewById(R.id.tvUser);
             ivUser = v.findViewById(R.id.ivUser);
+
+
         }
+
+
     }
 
     @Override
@@ -34,17 +40,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
 
     }
 
-    public UserAdapter(ArrayList<User> myDataset, String MyId) {
+    public ChatListAdapter(ArrayList<ChatListVO> myDataset, String MyId) {
         this.mDataset = myDataset;
         this.MyId=MyId;
     }
 
 
     @Override
-    public UserAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_item_view, parent, false);
+                .inflate(R.layout.chat_list_view, parent, false);
 
 
         MyViewHolder vh = new MyViewHolder(v);

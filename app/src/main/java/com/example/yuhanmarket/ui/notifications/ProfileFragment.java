@@ -128,34 +128,35 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_IMAGE_CODE)
         {
-            Uri image = data.getData();
             try {
+            Uri image = data.getData();
+
                 Bitmap bitmap =MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),image);
                 UserImg.setImageBitmap(bitmap);
+                //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+                StorageReference riversRef = mStorageRef.child("users").child(UserId).child("profile.jpg");
 
+                riversRef.putFile(image)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // Get a URL to the uploaded content
+                                //   Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                Log.e("test","제발");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                                // ...
+                            }
+                        });
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-            StorageReference riversRef = mStorageRef.child("users").child(UserId).child("profile.jpg");
 
-            riversRef.putFile(image)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Get a URL to the uploaded content
-                         //   Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            Log.e("test","제발");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                            // ...
-                        }
-                    });
         }
 
     }

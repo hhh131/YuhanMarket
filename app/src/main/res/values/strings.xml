@@ -4,4 +4,5 @@
     <string name="title_home">Home</string>
     <string name="title_friend">Chat</string>
     <string name="title_Profile">My</string>
+    <string name="title_Post">Post</string>
 </resources>

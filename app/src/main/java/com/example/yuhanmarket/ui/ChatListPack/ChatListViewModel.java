@@ -1,16 +1,16 @@
-package com.example.yuhanmarket.UserPack;
+package com.example.yuhanmarket.ui.ChatListPack;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class UserViewModel extends ViewModel {
+public class ChatListViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public UserViewModel() {
+    public ChatListViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is home fragment");
     }
 
     public LiveData<String> getText() {

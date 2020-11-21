@@ -1,6 +1,6 @@
-package com.example.yuhanmarket.UserPack;
+package com.example.yuhanmarket.ui.ChatListPack;
 
-public class User {
+public class ChatListVO {
     String UserId;
 
 

@@ -1,0 +1,99 @@
+package com.example.yuhanmarket.ui.ChatListPack;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.yuhanmarket.PostListPack.ListAdapter;
+import com.example.yuhanmarket.PostListPack.ListVO;
+import com.example.yuhanmarket.R;
+import com.example.yuhanmarket.WritePostActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+public class ChatListFragment extends Fragment {
+    private static final String TAG = "ChatListFragment";
+    private ChatListViewModel chatListViewModel;
+    private RecyclerView recyclerView;
+    ListAdapter listAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    String UserId;
+    Button PostBtn;
+    ArrayList<ListVO> listVOArray;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("");
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        chatListViewModel =
+                new ViewModelProvider(this).get(ChatListViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_chatlist, container, false);
+        PostBtn = (Button) root.findViewById(R.id.PostBtn);
+
+
+        PostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(getContext(), WritePostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shard", Context.MODE_PRIVATE);
+        UserId= sharedPreferences.getString("UserId","");
+
+        listVOArray = new ArrayList<>();
+        recyclerView = (RecyclerView)root.findViewById(R.id.ryView);
+        recyclerView.setHasFixedSize(true);
+
+
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        listAdapter = new ListAdapter(listVOArray, UserId);
+        recyclerView.setAdapter(listAdapter);
+
+
+
+
+        myRef = database.getReference("users");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.e(TAG,snapshot.getValue().toString());
+                for(DataSnapshot dataSnapshot1: snapshot.getChildren())
+                {
+                    ListVO listVO = dataSnapshot1.getValue(ListVO.class);
+                    Log.e(TAG, listVO.getUserId());
+                    listVOArray.add(listVO);
+                }
+                listAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return root;
+    }
+}

@@ -26,7 +26,7 @@ import java.util.Hashtable;
 public class ChatActivity extends Activity {
     private static final String TAG = "ChatActivity";
     private RecyclerView recyclerView;
-    MyAdapter mAdapter;
+    ChatAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     EditText editText;
     Button bntSend;
@@ -51,7 +51,7 @@ public class ChatActivity extends Activity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        mAdapter = new MyAdapter(ChatArray,UserId);
+        mAdapter = new ChatAdapter(ChatArray,UserId);
         recyclerView.setAdapter(mAdapter);
 
         ChildEventListener childEventListener = new ChildEventListener() {

@@ -11,7 +11,7 @@ import com.example.yuhanmarket.R;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
     private ArrayList<Chat> mDataset;
     String MyId;
 
@@ -37,14 +37,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public MyAdapter(ArrayList<Chat> myDataset,String MyId) {
+    public ChatAdapter(ArrayList<Chat> myDataset, String MyId) {
         mDataset = myDataset;
         this.MyId=MyId;
     }
 
 
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
+    public ChatAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v =  LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_text_view, parent, false);
