@@ -82,9 +82,9 @@ public class ChatListFragment extends Fragment {
                 Log.e(TAG,snapshot.getValue().toString());
                 for(DataSnapshot dataSnapshot1: snapshot.getChildren())
                 {
-                    ListVO listVO = dataSnapshot1.getValue(ListVO.class);
+                /*    ListVO listVO = dataSnapshot1.getValue(ListVO.class);
                     Log.e(TAG, listVO.getUserId());
-                    listVOArray.add(listVO);
+                    listVOArray.add(listVO);*/
                 }
                 listAdapter.notifyDataSetChanged();
             }

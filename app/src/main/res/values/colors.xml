@@ -3,4 +3,32 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+
+    <color name="transparent">#00000000</color>
+    <color name="item_address">#878e94</color>
+    <color name="item_comment_chat_heart">#4a5159</color>
+
+    <!-- 하단네비게이션바 -->
+    <color name="btmNavInChecked">#ADB6BD</color>
+
+    <color name="start_activity_color">#f8f9fb</color>
+    <color name="start_button_color">#ff8a3d</color>
+
+    <color name="hint_text_color">#bebebe</color>
+    <color name="round_edit_text_stroke_color">#cfd4da</color>
+    <color name="light_round_button_color">#cfd4da</color>
+    <color name="dark_round_button_color">#495058</color>
+
+    <color name="location_text_color">#878787</color>
+
+    <color name="manner_text_kor_color">#868f96</color>
+    <color name="manner_text_color">#e09100</color>
+    <color name="product_activity_line_color">#eaebed</color>
+
+    <color name="round_stroke_gray_color">#e5e5e5</color>
+
+    <color name="tabbar_text">#acb5bc</color>
 </resources>

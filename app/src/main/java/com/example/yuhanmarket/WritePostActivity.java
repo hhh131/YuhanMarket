@@ -48,8 +48,7 @@ public class WritePostActivity extends AppCompatActivity {
     String UserId;
     File localFile;
     long ProductListNum;
-    int PostNum;
-    int h=1;
+    Uri image;
     private StorageReference mStorageRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,33 +83,33 @@ public class WritePostActivity extends AppCompatActivity {
                             ProductListNum = snapshot.child("ProductList").getChildrenCount();
 
 
-                         /*   for(int i = 1;i<snapshot.getChildrenCount();i++)
-                            {
-
-                                PostNum=Integer.parseInt(snapshot.child("ProductList").child(Integer.toString(i)).getKey());
-
-                                if(h<PostNum)
-                                {
-                                   //PostNum=Integer.parseInt(snapshot.child("ProductList").child(Integer.toString(i)).getKey());
-                                    h=PostNum;
-                                }
-
-                            }*/
-
-
-                                //PostNum++;
-
-
-
 
 
                             WriteVO writeVO = new WriteVO(UserId,StTitle,StPrice,StContent);
 
-                            Toast.makeText(getApplicationContext(),h+"",Toast.LENGTH_SHORT).show();
-                           myRef.child("ProductList").push().setValue(writeVO);
+                          String key= myRef.child("ProductList").push().getKey();
+                          myRef.child("ProductList").child(key).setValue(writeVO);
+                          Toast.makeText(getApplicationContext(),key,Toast.LENGTH_SHORT).show();
 
-                            //finish();
 
+
+                            StorageReference riversRef = mStorageRef.child("Post").child(key).child("PostImg.jpg");
+                            riversRef.putFile(image)
+                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            // Get a URL to the uploaded content
+                                            //   Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                            Log.e("test","제발");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            // Handle unsuccessful uploads
+                                            // ...
+                                        }
+                                    });
 
                         }
 
@@ -119,6 +118,7 @@ public class WritePostActivity extends AppCompatActivity {
 
                         }
                     });
+
 
 
                 }
@@ -171,7 +171,7 @@ public class WritePostActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_IMAGE_CODE)
         {
-            Uri image = data.getData();
+            image = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),image);
                 PostImg.setImageBitmap(bitmap);
@@ -181,24 +181,7 @@ public class WritePostActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-            StorageReference riversRef = mStorageRef.child("Post").child(UserId).child("Post.jpg");
 
-            riversRef.putFile(image)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Get a URL to the uploaded content
-                            //   Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            Log.e("test","제발");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                            // ...
-                        }
-                    });
         }
 
     }

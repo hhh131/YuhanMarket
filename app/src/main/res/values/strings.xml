@@ -5,4 +5,11 @@
     <string name="title_friend">Chat</string>
     <string name="title_Profile">My</string>
     <string name="title_Post">Post</string>
+<!--PostView-->
+    <string name="manner">매너온도</string>
+    <string name="bottom_chat_button_text">채팅으로 거래하기</string>
+    <string name="report_text">이 게시글 신고하기</string>
+    <string name="users_another_product">님의 판매 상품</string>
+    <string name="users_another_product_see_all">모두보기</string>
+    <string name="comment">댓글</string>
 </resources>

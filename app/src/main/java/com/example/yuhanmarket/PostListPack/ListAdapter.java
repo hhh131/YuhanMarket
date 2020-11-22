@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.yuhanmarket.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
@@ -31,11 +33,14 @@ import java.util.ArrayList;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
     ArrayList<ListVO> mDataset;
     String MyId,Title;
-    private StorageReference mStorageRef;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
+
     File localFile;
     String UserId;
     ImageView PostImg;
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    String key;
+    public  class MyViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout PostLay;
         public TextView tvUser,tvTitle,tvPrice;
         public ImageView ivUser;
@@ -58,10 +63,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
                 @Override
                 public void onClick(View v) {
                     int pos=getAdapterPosition();
-                    Intent intent = new Intent(v.getContext(), PostViewActivity.class);
-                    //intent.putExtra("pos",pos);
-                    //intent.putExtra("key",mDataset.get(pos).getKey());
 
+                    Intent intent = new Intent(v.getContext(), PostViewActivity.class);
+                    intent.putExtra("pos",pos);
+                    intent.putExtra("key",mDataset.get(pos).getKey());
                     v.getContext().startActivity(intent);
                 }
             });
@@ -89,7 +94,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     public ListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_item_view, parent, false);
+                .inflate(R.layout.product_recycler_view_item, parent, false);
 
 
 
@@ -101,15 +106,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        holder.tvUser.setText(mDataset.get(position).getUserId());
+        key=mDataset.get(position).getKey();
+        //holder.tvUser.setText(mDataset.get(position).getUserId());
         holder.tvTitle.setText(mDataset.get(position).getTitle());
-        holder.tvPrice.setText(mDataset.get(position).getKey());
+        holder.tvPrice.setText("20,000원");
 
+
+        Log.e("Asdasd",key);
 
         localFile = null;
-      /*  try {
-            localFile = File.createTempFile("images", "jpg");
-            StorageReference riversRef = mStorageRef.child("users").child("1").child("profile.jpg");
+        /*try {
+            localFile = File.createTempFile("Images", "jpg");
+            StorageReference riversRef = storageRef.child("Post").child(key).child("PostImg.jpg");
             riversRef.getFile(localFile)
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
@@ -117,8 +125,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
                             // Successfully downloaded data to local file
                             // ...
                             Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                            holder.ivUser.setImageBitmap(bitmap);
-                            //PostImg.setImageBitmap(bitmap);
+                            PostImg.setImageBitmap(bitmap);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
