@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    tools:context=".src.product.ProductActivity">
+    tools:context=".PostViewActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/product_appbar_layout"

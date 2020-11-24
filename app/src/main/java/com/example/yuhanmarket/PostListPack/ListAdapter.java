@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yuhanmarket.PostViewActivity;
 import com.example.yuhanmarket.R;
+import com.example.yuhanmarket.ui.ChatListPack.ChatListVO;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -43,7 +44,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     public  class MyViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout PostLay;
         public TextView tvUser,tvTitle,tvPrice;
-        public ImageView ivUser;
+
         String UserId;
 
 
@@ -51,7 +52,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             super(v);
             tvTitle = v.findViewById(R.id.tvTitle);
             tvUser = v.findViewById(R.id.tvUser);
-            ivUser = v.findViewById(R.id.ivUser);
+            PostImg = v.findViewById(R.id.ivUser);
             tvPrice =v.findViewById(R.id.tvPrice);
             PostLay=v.findViewById(R.id.postLayout);
             SharedPreferences sharedPreferences = v.getContext().getSharedPreferences("shard", Context.MODE_PRIVATE);
@@ -106,16 +107,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        key=mDataset.get(position).getKey();
-        //holder.tvUser.setText(mDataset.get(position).getUserId());
-        holder.tvTitle.setText(mDataset.get(position).getTitle());
-        holder.tvPrice.setText("20,000원");
+        //key=mDataset.get(position).getKey();
+        holder.tvUser.setText(mDataset.get(position).getUserId());
+      //  holder.tvTitle.setText(mDataset.get(position).getTitle());
+       // holder.tvPrice.setText("20,000원");
 
 
         Log.e("Asdasd",key);
 
         localFile = null;
-        /*try {
+        try {
             localFile = File.createTempFile("Images", "jpg");
             StorageReference riversRef = storageRef.child("Post").child(key).child("PostImg.jpg");
             riversRef.getFile(localFile)
@@ -136,7 +137,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             });
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
 
 

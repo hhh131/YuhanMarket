@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.yuhanmarket.ChatPack.Chat;
 import com.example.yuhanmarket.PostListPack.ListAdapter;
 import com.example.yuhanmarket.PostListPack.ListVO;
 import com.example.yuhanmarket.R;
@@ -32,11 +33,11 @@ public class ChatListFragment extends Fragment {
     private static final String TAG = "ChatListFragment";
     private ChatListViewModel chatListViewModel;
     private RecyclerView recyclerView;
-    ListAdapter listAdapter;
+    ChatListAdapter listAdapter;
     private RecyclerView.LayoutManager layoutManager;
     String UserId;
     Button PostBtn;
-    ArrayList<ListVO> listVOArray;
+    ArrayList<ChatListVO> listVOArray;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("");
 
@@ -68,7 +69,7 @@ public class ChatListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        listAdapter = new ListAdapter(listVOArray, UserId);
+        listAdapter = new ChatListAdapter(listVOArray, UserId);
         recyclerView.setAdapter(listAdapter);
 
 
@@ -82,9 +83,9 @@ public class ChatListFragment extends Fragment {
                 Log.e(TAG,snapshot.getValue().toString());
                 for(DataSnapshot dataSnapshot1: snapshot.getChildren())
                 {
-                /*    ListVO listVO = dataSnapshot1.getValue(ListVO.class);
+                    ChatListVO listVO = dataSnapshot1.getValue(ChatListVO.class);
                     Log.e(TAG, listVO.getUserId());
-                    listVOArray.add(listVO);*/
+                    listVOArray.add(listVO);
                 }
                 listAdapter.notifyDataSetChanged();
             }

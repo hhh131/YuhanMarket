@@ -30,7 +30,7 @@ public class ChatActivity extends Activity {
     private RecyclerView.LayoutManager layoutManager;
     EditText editText;
     Button bntSend;
-    String UserId;
+    String UserId,OtherId;
     FirebaseDatabase database;
     ArrayList<Chat> ChatArray;
     @Override
@@ -39,6 +39,7 @@ public class ChatActivity extends Activity {
         setContentView(R.layout.activity_chat);
         database = FirebaseDatabase.getInstance();
         UserId=getIntent().getStringExtra("UserId");
+        OtherId=getIntent().getStringExtra("OtherId");
         recyclerView = (RecyclerView) findViewById(R.id.ryView);
         bntSend = (Button)findViewById(R.id.btnSend);
         editText = (EditText)findViewById(R.id.etSend);
@@ -122,6 +123,7 @@ public class ChatActivity extends Activity {
                         =new Hashtable<String, String>();
                 members.put("UserId",UserId);
                 members.put("text",stText);
+                members.put("time",datetime);
 
                 myRef.setValue(members);
             }

@@ -2,23 +2,35 @@ package com.example.yuhanmarket;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yuhanmarket.ChatPack.ChatActivity;
 import com.example.yuhanmarket.PostListPack.ListVO;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
+
+import java.io.File;
+import java.io.IOException;
 
 public class  PostViewActivity extends AppCompatActivity {
     TextView Title,Price,Content;
@@ -27,10 +39,16 @@ public class  PostViewActivity extends AppCompatActivity {
     String stTitle,stPrice,stContent,UserId;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("ProductList");
+    File localFile;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
+    ViewPager viewPager;
+    ImageView PostImg;
+    PostViewVO postViewVO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product);
+        setContentView(R.layout.activity_post_view);
         Intent intent = getIntent();
         key= intent.getStringExtra("key");
         int pos= intent.getIntExtra("pos",1);
@@ -38,18 +56,42 @@ public class  PostViewActivity extends AppCompatActivity {
         Price = (TextView)findViewById(R.id.Price);
         Content = (TextView)findViewById(R.id.Content);
         ChatBtn = (Button) findViewById(R.id.ChatBtn);
-
+        viewPager = (ViewPager)findViewById(R.id.product_viewpager);
+        PostImg = (ImageView)findViewById(R.id.ivProduct);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                PostViewVO postViewVO = snapshot.child(key).getValue(PostViewVO.class);
+                  postViewVO = snapshot.child(key).getValue(PostViewVO.class);
 
 
                 Title.setText(postViewVO.getTitle());
                 Price.setText(postViewVO.getPrice());
                 Content.setText(postViewVO.getContent());
 
+                localFile = null;
+                try {
+                    localFile = File.createTempFile("Images", "jpg");
+                    StorageReference riversRef = storageRef.child("Post").child(key).child("PostImg.jpg");
+                    riversRef.getFile(localFile)
+                            .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    // Successfully downloaded data to local file
+                                    // ...
+                                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                    PostImg.setImageBitmap(bitmap);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle failed download
+                            // ...
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -63,7 +105,9 @@ public class  PostViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                     Intent intent =new Intent(getApplicationContext(), ChatActivity.class);
-                intent.putExtra("UserId",UserId);
+
+                   intent.putExtra("OtherId",postViewVO.getUserId());
+                    intent.putExtra("UserId",UserId);
                     startActivity(intent);
             }
         });
