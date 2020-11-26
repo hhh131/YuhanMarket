@@ -39,14 +39,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     File localFile;
     String UserId;
-    ImageView PostImg;
+
     String key;
     public  class MyViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout PostLay;
         public TextView tvUser,tvTitle,tvPrice;
 
         String UserId;
-
+        ImageView PostImg;
 
         public MyViewHolder(View v) {
             super(v);
@@ -105,15 +105,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        //key=mDataset.get(position).getKey();
-        holder.tvUser.setText(mDataset.get(position).getUserId());
-      //  holder.tvTitle.setText(mDataset.get(position).getTitle());
-       // holder.tvPrice.setText("20,000원");
+        key=mDataset.get(position).getKey();
+       // holder.tvUser.setText(mDataset.get(position).getUserId());
+        holder.tvTitle.setText(mDataset.get(position).getTitle());
+       holder.tvPrice.setText("20,000원");
 
 
-        Log.e("Asdasd",key);
+
 
         localFile = null;
         try {
@@ -126,7 +126,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
                             // Successfully downloaded data to local file
                             // ...
                             Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                            PostImg.setImageBitmap(bitmap);
+                            holder.PostImg.setImageBitmap(bitmap);
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override

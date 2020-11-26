@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -36,7 +38,7 @@ public class  PostViewActivity extends AppCompatActivity {
     TextView Title,Price,Content;
     Button ChatBtn;
     String key;
-    String stTitle,stPrice,stContent,UserId;
+    String stTitle,stPrice,stContent,PostId,UserId;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("ProductList");
     File localFile;
@@ -45,6 +47,8 @@ public class  PostViewActivity extends AppCompatActivity {
     ViewPager viewPager;
     ImageView PostImg;
     PostViewVO postViewVO;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,9 @@ public class  PostViewActivity extends AppCompatActivity {
         ChatBtn = (Button) findViewById(R.id.ChatBtn);
         viewPager = (ViewPager)findViewById(R.id.product_viewpager);
         PostImg = (ImageView)findViewById(R.id.ivProduct);
+        SharedPreferences sharedPreferences = getSharedPreferences("shard", Context.MODE_PRIVATE);
+        UserId= sharedPreferences.getString("UserId","");
+
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -68,6 +75,28 @@ public class  PostViewActivity extends AppCompatActivity {
                 Title.setText(postViewVO.getTitle());
                 Price.setText(postViewVO.getPrice());
                 Content.setText(postViewVO.getContent());
+                PostId=postViewVO.getUserId();
+
+
+
+                if(PostId.equals(UserId))
+                {
+                    ChatBtn.setText("거래 완료처리");
+                }
+
+                ChatBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent =new Intent(getApplicationContext(), ChatActivity.class);
+
+                        intent.putExtra("OtherId",postViewVO.getUserId());
+                        intent.putExtra("UserId",PostId);
+                        startActivity(intent);
+
+
+
+                    }
+                });
 
                 localFile = null;
                 try {
@@ -101,16 +130,8 @@ public class  PostViewActivity extends AppCompatActivity {
             }
         });
 
-        ChatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent intent =new Intent(getApplicationContext(), ChatActivity.class);
 
-                   intent.putExtra("OtherId",postViewVO.getUserId());
-                    intent.putExtra("UserId",UserId);
-                    startActivity(intent);
-            }
-        });
+
 
 
 

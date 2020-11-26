@@ -1,9 +1,12 @@
 package com.example.yuhanmarket.ChatPack;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,12 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.yuhanmarket.PostListPack.ListVO;
 import com.example.yuhanmarket.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,15 +35,20 @@ public class ChatActivity extends Activity {
     private RecyclerView.LayoutManager layoutManager;
     EditText editText;
     Button bntSend;
-    String UserId,OtherId;
-    FirebaseDatabase database;
+    String UserId,OtherId,RoomNum;
+    FirebaseDatabase database=FirebaseDatabase.getInstance();;
     ArrayList<Chat> ChatArray;
+    DatabaseReference myRef = database.getReference("");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        SharedPreferences sharedPreferences = getSharedPreferences("shard", Context.MODE_PRIVATE);
+        UserId= sharedPreferences.getString("UserId","");
+
         database = FirebaseDatabase.getInstance();
-        UserId=getIntent().getStringExtra("UserId");
+       // UserId=getIntent().getStringExtra("UserId");
         OtherId=getIntent().getStringExtra("OtherId");
         recyclerView = (RecyclerView) findViewById(R.id.ryView);
         bntSend = (Button)findViewById(R.id.btnSend);
@@ -118,17 +128,49 @@ public class ChatActivity extends Activity {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String datetime =dateFormat.format(calendar.getTime());
 
-                DatabaseReference myRef = database.getReference("Chat").child(datetime);
-                Hashtable<String,String> members
-                        =new Hashtable<String, String>();
-                members.put("UserId",UserId);
-                members.put("text",stText);
-                members.put("time",datetime);
 
-                myRef.setValue(members);
+                 myRef = database.getReference("Chat").push();
+
+
+
+                Hashtable<String,String> ChatRoom
+                        =new Hashtable<String, String>();
+                ChatRoom.put("OtherId",OtherId);
+                ChatRoom.put("UserId",UserId);
+
+
+                Hashtable<String,String> comment
+                        =new Hashtable<String, String>();
+                comment.put("UserId",UserId);
+                comment.put("text",stText);
+                comment.put("time",datetime);
+
+
+
+
+                myRef.setValue(comment);
             }
         });
 
     }
-    // ...
+    void ChatRoomCheck()
+    {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 }
