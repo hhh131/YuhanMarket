@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yuhanmarket.ChatPack.ChatActivity;
+import com.example.yuhanmarket.PostListPack.ListAdapter;
 import com.example.yuhanmarket.PostListPack.ListVO;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +34,7 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class  PostViewActivity extends AppCompatActivity {
     TextView Title,Price,Content;
@@ -47,15 +49,17 @@ public class  PostViewActivity extends AppCompatActivity {
     ViewPager viewPager;
     ImageView PostImg;
     PostViewVO postViewVO;
-
-
+    int pos;
+    ArrayList<ListVO> arrayList;
+    ListAdapter listAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_view);
         Intent intent = getIntent();
         key= intent.getStringExtra("key");
-        int pos= intent.getIntExtra("pos",1);
+        pos= intent.getIntExtra("pos",1);
+        //arrayList = intent.getParcelableArrayListExtra("array");
         Title = (TextView)findViewById(R.id.Title);
         Price = (TextView)findViewById(R.id.Price);
         Content = (TextView)findViewById(R.id.Content);
@@ -82,16 +86,26 @@ public class  PostViewActivity extends AppCompatActivity {
                 if(PostId.equals(UserId))
                 {
                     ChatBtn.setText("거래 완료처리");
+
                 }
 
                 ChatBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent =new Intent(getApplicationContext(), ChatActivity.class);
 
-                        intent.putExtra("OtherId",postViewVO.getUserId());
-                        intent.putExtra("UserId",PostId);
-                        startActivity(intent);
+                        if(PostId.equals(UserId))
+                        {
+
+
+                        }
+                        else{
+                            Intent intent =new Intent(getApplicationContext(), ChatActivity.class);
+
+                            intent.putExtra("OtherId",postViewVO.getUserId());
+                            intent.putExtra("UserId",PostId);
+                            startActivity(intent);
+
+                        }
 
 
 
