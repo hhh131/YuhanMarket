@@ -1,14 +1,17 @@
 package com.example.yuhanmarket.ui.ChatListPack;
 
 public class ChatListVO {
-    String UserId;
+
+    String RoomNum;
 
 
-    public String getUserId() {
-        return UserId;
+
+
+    public String getRoomNum() {
+        return RoomNum;
     }
 
-    public void setUserId(String userId) {
-        UserId = userId;
+    public void setRoomNum(String roomNum) {
+        RoomNum = roomNum;
     }
 }

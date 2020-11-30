@@ -61,7 +61,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        holder.textView.setText(mDataset.get(position).getUserId());
+        holder.textView.setText(mDataset.get(position).getRoomNum());
 
     }
 

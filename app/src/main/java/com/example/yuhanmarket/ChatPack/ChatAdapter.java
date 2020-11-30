@@ -26,8 +26,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        //return super.getItemViewType(position);
-        if(mDataset.get(position).UserId.equals(MyId))
+       // return super.getItemViewType(position);
+      if(mDataset.get(position).UserId.equals(MyId))
         {
             return 1;
         }
@@ -35,6 +35,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         {
             return 2;
         }
+       // return  2;
     }
 
     public ChatAdapter(ArrayList<Chat> myDataset, String MyId) {

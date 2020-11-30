@@ -68,7 +68,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
                     Intent intent = new Intent(v.getContext(), PostViewActivity.class);
                     intent.putExtra("pos",pos);
                     intent.putExtra("key",mDataset.get(pos).getKey());
-                    intent.putExtra("Array",mDataset);
+                    //intent.putExtra("Array",mDataset);
 
                     v.getContext().startActivity(intent);
                 }

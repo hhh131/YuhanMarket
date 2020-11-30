@@ -35,24 +35,26 @@ public class ChatActivity extends Activity {
     private RecyclerView.LayoutManager layoutManager;
     EditText editText;
     Button bntSend;
-    String UserId,OtherId,RoomNum;
-    FirebaseDatabase database=FirebaseDatabase.getInstance();;
+    String UserId, OtherId, RoomNum;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    ;
     ArrayList<Chat> ChatArray;
     DatabaseReference myRef = database.getReference("");
+    String RoomName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         SharedPreferences sharedPreferences = getSharedPreferences("shard", Context.MODE_PRIVATE);
-        UserId= sharedPreferences.getString("UserId","");
+        UserId = sharedPreferences.getString("UserId", "");
 
         database = FirebaseDatabase.getInstance();
-       // UserId=getIntent().getStringExtra("UserId");
-        OtherId=getIntent().getStringExtra("OtherId");
+        // UserId=getIntent().getStringExtra("UserId");
+        OtherId = getIntent().getStringExtra("OtherId");
         recyclerView = (RecyclerView) findViewById(R.id.ryView);
-        bntSend = (Button)findViewById(R.id.btnSend);
-        editText = (EditText)findViewById(R.id.etSend);
+        bntSend = (Button) findViewById(R.id.btnSend);
+        editText = (EditText) findViewById(R.id.etSend);
         ChatArray = new ArrayList<>();
 
         recyclerView.setHasFixedSize(true);
@@ -62,8 +64,17 @@ public class ChatActivity extends Activity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        mAdapter = new ChatAdapter(ChatArray,UserId);
+        mAdapter = new ChatAdapter(ChatArray, UserId);
         recyclerView.setAdapter(mAdapter);
+
+
+        final Hashtable<String, String> ChatRoom
+                = new Hashtable<String, String>();
+        ChatRoom.put("OtherId", OtherId);
+        ChatRoom.put("UserId", UserId);
+
+
+        RoomName = ChatRoom.get("OtherId") + ChatRoom.get("UserId");
 
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -72,9 +83,9 @@ public class ChatActivity extends Activity {
 
                 // A new comment has been added, add it to the displayed list
                 Chat chat = dataSnapshot.getValue(Chat.class);
-                String commentKey = dataSnapshot.getKey();
+               // String commentKey = dataSnapshot.getKey();
                 String stUserId = chat.getUserId();
-                String stText = chat.getText();
+               // Log.d(TAG,chat.getText().toString());
                 ChatArray.add(chat);
                 mAdapter.notifyDataSetChanged();
             }
@@ -106,7 +117,6 @@ public class ChatActivity extends Activity {
                 Log.d(TAG, "onChildMoved:" + dataSnapshot.getKey());
 
 
-
             }
 
             @Override
@@ -116,51 +126,46 @@ public class ChatActivity extends Activity {
                         Toast.LENGTH_SHORT).show();
             }
         };
-        DatabaseReference ref = database.getReference("Chat");
+        DatabaseReference ref = database.getReference("Chat").child(RoomName);
         ref.addChildEventListener(childEventListener);
-        
+
         bntSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stText=editText.getText().toString();
-                Toast.makeText(getApplicationContext(),stText,Toast.LENGTH_SHORT).show();
-                Calendar calendar=Calendar.getInstance();
+                String stText = editText.getText().toString();
+                Toast.makeText(getApplicationContext(), stText, Toast.LENGTH_SHORT).show();
+                Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String datetime =dateFormat.format(calendar.getTime());
+                String datetime = dateFormat.format(calendar.getTime());
 
 
-                 myRef = database.getReference("Chat").push();
-
-
-
-                Hashtable<String,String> ChatRoom
-                        =new Hashtable<String, String>();
-                ChatRoom.put("OtherId",OtherId);
-                ChatRoom.put("UserId",UserId);
-
-
-                Hashtable<String,String> comment
-                        =new Hashtable<String, String>();
-                comment.put("UserId",UserId);
-                comment.put("text",stText);
-                comment.put("time",datetime);
+                myRef = database.getReference("Chat");
 
 
 
+                Hashtable<String, String> comment
+                        = new Hashtable<String, String>();
+                comment.put("UserId", UserId);
+                comment.put("text", stText);
+                comment.put("time", datetime);
 
-                myRef.setValue(comment);
+
+
+             // String Roomkey= myRef.child(RoomName).push().getKey();
+
+               // myRef.child(RoomName).setValue(ChatRoom);
+                myRef.child(RoomName).push().setValue(comment);
+
             }
         });
-
     }
-    void ChatRoomCheck()
-    {
+
+    void ChatRoomCheck() {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                 }
 
@@ -171,6 +176,8 @@ public class ChatActivity extends Activity {
 
             }
         });
-
     }
 }
+
+
+

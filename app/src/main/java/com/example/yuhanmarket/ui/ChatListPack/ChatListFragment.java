@@ -75,7 +75,7 @@ public class ChatListFragment extends Fragment {
 
 
 
-        myRef = database.getReference("users");
+        myRef = database.getReference("Chat");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -84,7 +84,7 @@ public class ChatListFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1: snapshot.getChildren())
                 {
                     ChatListVO listVO = dataSnapshot1.getValue(ChatListVO.class);
-                    Log.e(TAG, listVO.getUserId());
+                    //Log.e(TAG, listVO.getUserId());
                     listVOArray.add(listVO);
                 }
                 listAdapter.notifyDataSetChanged();
