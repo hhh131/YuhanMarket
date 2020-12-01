@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.yuhanmarket.PostListPack.ListVO;
@@ -34,10 +35,10 @@ public class ChatActivity extends Activity {
     ChatAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     EditText editText;
-    Button bntSend;
+    ImageButton bntSend;
     String UserId, OtherId, RoomNum;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    ;
+
     ArrayList<Chat> ChatArray;
     DatabaseReference myRef = database.getReference("");
     String RoomName;
@@ -53,7 +54,7 @@ public class ChatActivity extends Activity {
         // UserId=getIntent().getStringExtra("UserId");
         OtherId = getIntent().getStringExtra("OtherId");
         recyclerView = (RecyclerView) findViewById(R.id.ryView);
-        bntSend = (Button) findViewById(R.id.btnSend);
+        bntSend = (ImageButton) findViewById(R.id.btnSend);
         editText = (EditText) findViewById(R.id.etSend);
         ChatArray = new ArrayList<>();
 

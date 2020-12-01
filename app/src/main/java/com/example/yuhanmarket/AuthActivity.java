@@ -1,0 +1,119 @@
+package com.example.yuhanmarket;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+public class AuthActivity extends AppCompatActivity {
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("users");
+    Button OkBtn;
+    String UserId;
+    EditText etEmailAuthNumber;
+    String AuthNum,DbAuthNum;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_auth);
+        OkBtn = (Button)findViewById(R.id.ok_btn);
+        etEmailAuthNumber = (EditText)findViewById(R.id.emailAuth_number);
+        SharedPreferences sharedPreferences = getSharedPreferences("shard", Context.MODE_PRIVATE);
+        UserId= sharedPreferences.getString("UserId","");
+
+
+
+
+
+
+
+
+        if(UserId.equals(null))
+        {
+
+        }
+        else
+        {
+            Intent intent=getIntent();
+            UserId=intent.getStringExtra("JoinId");
+        }
+
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.child("1").child("mailAuthStatus").getValue().equals(true)) {
+                    Intent intent = new Intent(AuthActivity.this,TapActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"인증 완료.",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
+        OkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Log.e("Test",UserId);
+                AuthNum= etEmailAuthNumber.getText().toString();
+
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        DbAuthNum=snapshot.child(UserId).child("authString").getValue().toString();
+
+                        if(DbAuthNum.equals(AuthNum))
+                        {
+                            myRef.child(UserId).child("mailAuthStatus").setValue(true);
+                            Toast.makeText(getApplicationContext(),"인증 완료.",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                        else
+                        {
+
+                            Toast.makeText(getApplicationContext(),"인증번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+            }
+        });
+
+
+    }
+}

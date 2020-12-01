@@ -68,7 +68,7 @@
                 android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:maxLength="9"
+                android:maxLength="20"
                 android:imeOptions="actionNext"
                 android:background="#65C0B5"
                 android:hint=" 학번"

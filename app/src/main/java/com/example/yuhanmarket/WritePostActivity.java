@@ -171,6 +171,7 @@ public class WritePostActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_IMAGE_CODE)
         {
+
             image = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),image);
