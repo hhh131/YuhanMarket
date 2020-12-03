@@ -1,4 +1,4 @@
-package com.example.yuhanmarket;
+  package com.example.yuhanmarket;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,28 +51,6 @@ public class AuthActivity extends AppCompatActivity {
             Intent intent=getIntent();
             UserId=intent.getStringExtra("JoinId");
         }
-
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.child("1").child("mailAuthStatus").getValue().equals(true)) {
-                    Intent intent = new Intent(AuthActivity.this,TapActivity.class);
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"인증 완료.",Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
 
 
 

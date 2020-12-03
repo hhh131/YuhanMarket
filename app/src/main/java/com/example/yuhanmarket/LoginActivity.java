@@ -48,16 +48,29 @@ public class LoginActivity extends Activity {
 
                             if(snapshot.child(id).child("pwd").getValue().equals(pwd))
                             {
-                                Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-                                intent.putExtra("UserId",etid.getText().toString());
 
-                                SharedPreferences sharedPreferences = getSharedPreferences("shard",Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("UserId",etid.getText().toString());
-                                editor.commit();
+                                if(snapshot.child(id).child("mailAuthStatus").getValue().equals(true))
+                                {
+                                    Intent intent = new Intent(getApplicationContext(), TapActivity.class);
 
 
-                                startActivity(intent);
+                                    SharedPreferences sharedPreferences = getSharedPreferences("shard",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("UserId",etid.getText().toString());
+                                    editor.commit();
+
+
+                                    startActivity(intent);
+                                }
+                                else
+                                {
+                                    Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
+                                    intent.putExtra("UserId",etid.getText().toString());
+                                    startActivity(intent);
+
+                                }
+
+
                             }
                             else
                             {

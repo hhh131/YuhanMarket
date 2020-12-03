@@ -71,7 +71,7 @@ public class JoinActivity extends AppCompatActivity {
                     try {
                         GMailSender gMailSender = new GMailSender("gmlrnjs131@gmail.com", "akxlcl157");
                         //GMailSender.sendMail(제목, 본문내용, 받는사람);
-                        gMailSender.sendMail("유한마켓 인증메일 입니다.","인증 번호입니다. 번호를 입력하여 회원가입을 완료하여 주세요 \n인증번호 : "+code,"heekwon131@yuhan.ac.kr");
+                        gMailSender.sendMail("유한마켓 인증메일 입니다.","인증 번호입니다. 번호를 입력하여 회원가입을 완료하여 주세요 \n인증번호 : "+code,"kdysense@yuhan.ac.kr");
                         Toast.makeText(getApplicationContext(), "송신 완료", Toast.LENGTH_SHORT).show();
                         //sendResultOk = true;
                         //button.setEnabled(false);
