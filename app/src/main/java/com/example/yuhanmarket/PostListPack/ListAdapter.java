@@ -54,7 +54,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             tvUser = v.findViewById(R.id.tvUser);
             PostImg = v.findViewById(R.id.ivUser);
             tvPrice =v.findViewById(R.id.tvPrice);
-            PostLay=v.findViewById(R.id.postLayout);
+            PostLay=v.findViewById(R.id.item_lay);
             SharedPreferences sharedPreferences = v.getContext().getSharedPreferences("shard", Context.MODE_PRIVATE);
             UserId= sharedPreferences.getString("UserId","");
 

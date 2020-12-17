@@ -1,6 +1,8 @@
 package com.example.yuhanmarket.ChatPack;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,19 +32,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 
-public class ChatActivity extends Activity {
+public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
     private RecyclerView recyclerView;
     ChatAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     EditText editText;
     ImageButton bntSend;
-    String UserId, OtherId, RoomNum;
+    private String UserId, OtherId, RoomId;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     ArrayList<Chat> ChatArray;
     DatabaseReference myRef = database.getReference("");
-    String RoomName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class ChatActivity extends Activity {
         database = FirebaseDatabase.getInstance();
         // UserId=getIntent().getStringExtra("UserId");
         OtherId = getIntent().getStringExtra("OtherId");
+        setTitle(OtherId);
         recyclerView = (RecyclerView) findViewById(R.id.ryView);
         bntSend = (ImageButton) findViewById(R.id.btnSend);
         editText = (EditText) findViewById(R.id.etSend);
@@ -75,9 +79,9 @@ public class ChatActivity extends Activity {
         ChatRoom.put("UserId", UserId);
 
 
-        RoomName = ChatRoom.get("OtherId") + ChatRoom.get("UserId");
+        //RoomName = ChatRoom.get("OtherId") + ChatRoom.get("UserId");
 
-        ChildEventListener childEventListener = new ChildEventListener() {
+  /*      ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
@@ -127,24 +131,40 @@ public class ChatActivity extends Activity {
                         Toast.LENGTH_SHORT).show();
             }
         };
-        DatabaseReference ref = database.getReference("Chat").child(RoomName);
+        DatabaseReference ref = database.getReference("Chat").child(RoomId);
         ref.addChildEventListener(childEventListener);
-
+*/
         bntSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String stText = editText.getText().toString();
-                Toast.makeText(getApplicationContext(), stText, Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getApplicationContext(), stText, Toast.LENGTH_SHORT).show();
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String datetime = dateFormat.format(calendar.getTime());
 
+                ChatModel chatModel = new ChatModel();
+                chatModel.users.put(UserId,true);
+                chatModel.users.put(OtherId,true);
+
+
+
 
                 myRef = database.getReference("Chat");
+                if(RoomId==null) {
+                    myRef.push().setValue(chatModel);
+                }
+                else{
+                    ChatModel.Comment comment = new ChatModel.Comment();
+                    comment.uid=UserId;
+                    comment.message=stText;
+
+                    Toast.makeText(getApplicationContext(),RoomId,Toast.LENGTH_SHORT).show();
+                    database.getReference().child("Chat").child(RoomId).child("comments").push().setValue(comment);
+                }
 
 
-
-                Hashtable<String, String> comment
+/*                Hashtable<String, String> comment
                         = new Hashtable<String, String>();
                 comment.put("UserId", UserId);
                 comment.put("text", stText);
@@ -155,21 +175,25 @@ public class ChatActivity extends Activity {
              // String Roomkey= myRef.child(RoomName).push().getKey();
 
                // myRef.child(RoomName).setValue(ChatRoom);
-                myRef.child(RoomName).push().setValue(comment);
+                myRef.child(RoomName).push().setValue(comment);*/
 
             }
         });
+        checkChatRoom();
     }
 
-    void ChatRoomCheck() {
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+    void checkChatRoom()
+    {
+        database.getReference("Chat").orderByChild("users/"+UserId).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot item : dataSnapshot.getChildren()){
+                    ChatModel chatModel=item.getValue(ChatModel.class);
+                    if(chatModel.users.containsKey(OtherId)){
+                            RoomId=item.getKey();
+                    }
                 }
-
             }
 
             @Override

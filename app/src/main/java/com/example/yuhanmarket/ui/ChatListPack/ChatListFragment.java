@@ -80,7 +80,7 @@ public class ChatListFragment extends Fragment {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.e(TAG,snapshot.getValue().toString());
+               // Log.e(TAG,snapshot.getValue().toString());
                 for(DataSnapshot dataSnapshot1: snapshot.getChildren())
                 {
                     ChatListVO listVO = dataSnapshot1.getValue(ChatListVO.class);

@@ -87,6 +87,9 @@ public class  PostViewActivity extends AppCompatActivity {
                 {
                     ChatBtn.setText("거래 완료처리");
 
+
+
+
                 }
 
                 ChatBtn.setOnClickListener(new View.OnClickListener() {

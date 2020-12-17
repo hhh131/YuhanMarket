@@ -35,64 +35,77 @@ public class LoginActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(etid.getText().toString().isEmpty()&&etpwd.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "아이디와 비밀번호를 입력 해 주세요", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (etid.getText().toString().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "아이디를 입력 해 주세요", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(etpwd.getText().toString().isEmpty())
+                    {
+                        Toast.makeText(getApplicationContext(), "비밀번호를 입력 해 주세요", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-
-                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        String id = etid.getText().toString();
-                        String pwd = etpwd.getText().toString();
-                        if(snapshot.hasChild(id))
-                        {
-
-                            if(snapshot.child(id).child("pwd").getValue().equals(pwd))
-                            {
-
-                                if(snapshot.child(id).child("mailAuthStatus").getValue().equals(true))
+                                String id = etid.getText().toString();
+                                String pwd = etpwd.getText().toString();
+                                if(snapshot.hasChild(id))
                                 {
-                                    Intent intent = new Intent(getApplicationContext(), TapActivity.class);
+
+                                    if(snapshot.child(id).child("pwd").getValue().equals(pwd))
+                                    {
+
+                                        if(snapshot.child(id).child("mailAuthStatus").getValue().equals(true))
+                                        {
+                                            Intent intent = new Intent(getApplicationContext(), TapActivity.class);
 
 
-                                    SharedPreferences sharedPreferences = getSharedPreferences("shard",Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("UserId",etid.getText().toString());
-                                    editor.commit();
+                                            SharedPreferences sharedPreferences = getSharedPreferences("shard",Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putString("UserId",etid.getText().toString());
+                                            editor.commit();
 
 
-                                    startActivity(intent);
+                                            startActivity(intent);
+                                        }
+                                        else
+                                        {
+                                            Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
+                                            intent.putExtra("UserId",etid.getText().toString());
+                                            startActivity(intent);
+
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(getApplicationContext(),"비밀번호가 일치 하지 않습니다.",Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                                 else
                                 {
-                                    Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-                                    intent.putExtra("UserId",etid.getText().toString());
-                                    startActivity(intent);
-
+                                    Toast.makeText(getApplicationContext(),"아이디가 존재하지 않습니다.",Toast.LENGTH_SHORT).show();
                                 }
 
 
-                            }
-                            else
-                            {
-                                Toast.makeText(getApplicationContext(),"비밀번호가 일치 하지 않습니다.",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        else
-                        {
-                            Toast.makeText(getApplicationContext(),"아이디가 존재하지 않습니다.",Toast.LENGTH_SHORT).show();
-                        }
 
 
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
 
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
+                }
 
 
 

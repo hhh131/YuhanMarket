@@ -1,5 +1,6 @@
 package com.example.yuhanmarket.ui.ChatListPack;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.yuhanmarket.ChatPack.ChatActivity;
+import com.example.yuhanmarket.PostViewActivity;
 import com.example.yuhanmarket.R;
 
 import java.util.ArrayList;
@@ -27,7 +30,21 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
             textView = v.findViewById(R.id.tvUser);
             ivUser = v.findViewById(R.id.ivUser);
+            v.setOnClickListener(new View.OnClickListener() {
 
+
+                @Override
+                public void onClick(View v) {
+                    int pos=getAdapterPosition();
+
+                    Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                    intent.putExtra("pos",pos);
+
+                    //intent.putExtra("Array",mDataset);
+
+                    v.getContext().startActivity(intent);
+                }
+            });
 
         }
 
