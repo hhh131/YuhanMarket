@@ -74,7 +74,7 @@ public class  PostViewActivity extends AppCompatActivity {
         //arrayList = intent.getParcelableArrayListExtra("array");
         tvid= (TextView)findViewById(R.id.tv_id);
         uploadDate = (TextView)findViewById(R.id.tv_product_date);
-        postViewLay = (LinearLayout)findViewById(R.id.postViewLay);
+       // postViewLay = (LinearLayout)findViewById(R.id.postViewLay);
         Title = (TextView)findViewById(R.id.Title);
         Price = (TextView)findViewById(R.id.Price);
         Content = (TextView)findViewById(R.id.Content);

@@ -1,4 +1,4 @@
-package com.example.yuhanmarket.ui.ChatListPack;
+package com.example.yuhanmarket.ChatListPack;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

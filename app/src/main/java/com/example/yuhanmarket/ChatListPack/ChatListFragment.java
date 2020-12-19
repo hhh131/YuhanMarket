@@ -1,7 +1,6 @@
-package com.example.yuhanmarket.ui.ChatListPack;
+package com.example.yuhanmarket.ChatListPack;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yuhanmarket.R;
-import com.example.yuhanmarket.PostPack.WritePostActivity;
 import com.example.yuhanmarket.TapActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -1,4 +1,4 @@
-package com.example.yuhanmarket.ui.notifications;
+package com.example.yuhanmarket.Profile;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

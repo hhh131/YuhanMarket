@@ -1,4 +1,4 @@
-package com.example.yuhanmarket.ui.ChatListPack;
+package com.example.yuhanmarket.ChatListPack;
 
 public class RoomVO {
     String RoomName;

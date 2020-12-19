@@ -181,11 +181,12 @@
             <TextView
                 android:id="@+id/Content"
                 android:layout_width="match_parent"
-                android:layout_height="126dp"
+                android:layout_height="194dp"
                 android:layout_marginTop="15dp"
                 android:paddingLeft="15dp"
                 android:textColor="@color/black"
-                android:textSize="20dp"></TextView>
+
+                android:textSize="15dp"></TextView>
 
             <TextView
                 android:id="@+id/product_tv_chat_favorite_hits"

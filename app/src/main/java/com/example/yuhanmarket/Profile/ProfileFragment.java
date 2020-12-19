@@ -1,8 +1,7 @@
-package com.example.yuhanmarket.ui.notifications;
+package com.example.yuhanmarket.Profile;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,26 +12,25 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.yuhanmarket.MainActivity;
+import com.example.yuhanmarket.PostPack.UpdatePostViewActivity;
 import com.example.yuhanmarket.R;
+import com.example.yuhanmarket.ReportActivity;
 import com.example.yuhanmarket.TapActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,6 +57,7 @@ public class ProfileFragment extends Fragment {
     Button Btn;
     String UserId;
     File localFile;
+    View root;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("");
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -69,7 +68,7 @@ public class ProfileFragment extends Fragment {
 
      /*  profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);*/
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
+         root = inflater.inflate(R.layout.fragment_profile, container, false);
 /*        final TextView textView = root.findViewById(R.id.text_profile);
         profileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -77,6 +76,7 @@ public class ProfileFragment extends Fragment {
                 textView.setText(s);
             }
         });*/
+        setHasOptionsMenu(true);
 
         etNickname=root.findViewById(R.id.nick);
         Btn = root.findViewById(R.id.btnModify);
@@ -227,4 +227,26 @@ public class ProfileFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu,inflater);
+        inflater.inflate(R.menu.profile_update,menu);
+
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        Intent intent  = new Intent(getActivity(),ProfileUpdateView.class);
+        startActivity(intent);
+
+
+   return super.onOptionsItemSelected(item);
+    }
+
+
 }

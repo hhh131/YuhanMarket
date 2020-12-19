@@ -71,7 +71,7 @@
                 android:maxLength="20"
                 android:imeOptions="actionNext"
                 android:background="#65C0B5"
-                android:hint=" 학번"
+                android:hint="아이디"
 
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff" />
@@ -84,7 +84,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="10dp"
                 android:background="#65C0B5"
-                android:hint=" 비밀번호"
+                android:hint="비밀번호"
                 android:inputType="textPassword"
                 android:textColor="#ffffff"
 
