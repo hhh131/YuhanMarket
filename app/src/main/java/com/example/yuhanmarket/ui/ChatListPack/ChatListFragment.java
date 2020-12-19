@@ -4,23 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.yuhanmarket.ChatPack.Chat;
-import com.example.yuhanmarket.PostListPack.ListAdapter;
-import com.example.yuhanmarket.PostListPack.ListVO;
 import com.example.yuhanmarket.R;
-import com.example.yuhanmarket.WritePostActivity;
+import com.example.yuhanmarket.PostPack.WritePostActivity;
+import com.example.yuhanmarket.TapActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,16 +44,11 @@ public class ChatListFragment extends Fragment {
         chatListViewModel =
                 new ViewModelProvider(this).get(ChatListViewModel.class);
         View root = inflater.inflate(R.layout.fragment_chatlist, container, false);
-        PostBtn = (Button) root.findViewById(R.id.PostBtn);
 
 
-        PostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent  = new Intent(getContext(), WritePostActivity.class);
-                startActivity(intent);
-            }
-        });
+        ActionBar actionBar = ((TapActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("채팅");
+
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shard", Context.MODE_PRIVATE);
         UserId= sharedPreferences.getString("UserId","");

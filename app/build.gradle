@@ -26,6 +26,8 @@ android {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.0.0')
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:26.1.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.firebase:firebase-core:18.0.0'
@@ -38,9 +40,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'com.google.firebase:firebase-storage:19.2.0'
-    implementation files('libs\\activation.jar')
-    implementation files('libs\\additionnal.jar')
-    implementation files('libs\\mail.jar')
+    implementation files('libs/activation.jar')
+    implementation files('libs/additionnal.jar')
+    implementation files('libs/mail.jar')
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

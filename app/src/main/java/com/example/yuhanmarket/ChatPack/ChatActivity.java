@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.yuhanmarket.PostListPack.ListVO;
 import com.example.yuhanmarket.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
@@ -73,10 +76,10 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-        final Hashtable<String, String> ChatRoom
+     /*   final Hashtable<String, String> ChatRoom
                 = new Hashtable<String, String>();
         ChatRoom.put("OtherId", OtherId);
-        ChatRoom.put("UserId", UserId);
+        ChatRoom.put("UserId", UserId);*/
 
 
         //RoomName = ChatRoom.get("OtherId") + ChatRoom.get("UserId");
@@ -152,19 +155,31 @@ public class ChatActivity extends AppCompatActivity {
 
                 myRef = database.getReference("Chat");
                 if(RoomId==null) {
-                    myRef.push().setValue(chatModel);
+                    bntSend.setEnabled(false);
+                    myRef.push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            checkChatRoom();
+                        }
+                    });
+
                 }
                 else{
-                    ChatModel.Comment comment = new ChatModel.Comment();
+                    Map<String, String> comment = new HashMap<>();//채팅방 대화내용
+                    comment.put("UserId",UserId);
+                    comment.put("Message",stText);
+              /*      ChatModel.Comment comment = new ChatModel.Comment();
                     comment.uid=UserId;
-                    comment.message=stText;
+                    comment.message=stText;*/
+
+                    //Log.e("ASdasd",comment.message);
 
                     Toast.makeText(getApplicationContext(),RoomId,Toast.LENGTH_SHORT).show();
-                    database.getReference().child("Chat").child(RoomId).child("comments").push().setValue(comment);
+                   myRef.child(RoomId).child("comments").push().setValue(comment);
                 }
 
 
-/*                Hashtable<String, String> comment
+                /* Hashtable<String, String> comment
                         = new Hashtable<String, String>();
                 comment.put("UserId", UserId);
                 comment.put("text", stText);
@@ -189,10 +204,11 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot item : dataSnapshot.getChildren()){
-                    ChatModel chatModel=item.getValue(ChatModel.class);
+
+                  /*  ChatModel chatModel=item.getValue(ChatModel.class);
                     if(chatModel.users.containsKey(OtherId)){
                             RoomId=item.getKey();
-                    }
+                    }*/
                 }
             }
 

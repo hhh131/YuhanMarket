@@ -8,18 +8,26 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yuhanmarket.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
     private ArrayList<Chat> mDataset;
     String MyId;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+        //List<ChatModel.Comment> comments;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("");
 
         public TextView textView;
         public MyViewHolder(View v) {
             super(v);
+           // comments=new ArrayList<>();
+            //myRef.child("Chat").child()
             textView = v.findViewById(R.id.tvChat);
         }
     }

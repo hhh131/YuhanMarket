@@ -17,18 +17,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.yuhanmarket.PostViewActivity;
+import com.example.yuhanmarket.PostPack.PostViewActivity;
 import com.example.yuhanmarket.R;
-import com.example.yuhanmarket.ui.ChatListPack.ChatListVO;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.CookieHandler;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
@@ -36,25 +40,28 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     String MyId,Title;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
-
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("ProductList");
     File localFile;
     String UserId;
 
     String key;
     public  class MyViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout PostLay;
-        public TextView tvUser,tvTitle,tvPrice;
+        public TextView tvUser,tvTitle,tvPrice,tvSales,tvDate;
 
         String UserId;
         ImageView PostImg;
 
         public MyViewHolder(View v) {
             super(v);
+            tvDate= v.findViewById(R.id.tv_product_date);
             tvTitle = v.findViewById(R.id.tvTitle);
             tvUser = v.findViewById(R.id.tvUser);
             PostImg = v.findViewById(R.id.ivUser);
             tvPrice =v.findViewById(R.id.tvPrice);
             PostLay=v.findViewById(R.id.item_lay);
+           // tvSales=v.findViewById(R.id.tvSales);
             SharedPreferences sharedPreferences = v.getContext().getSharedPreferences("shard", Context.MODE_PRIVATE);
             UserId= sharedPreferences.getString("UserId","");
 
@@ -113,6 +120,33 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
        // holder.tvUser.setText(mDataset.get(position).getUserId());
         holder.tvTitle.setText(mDataset.get(position).getTitle());
        holder.tvPrice.setText("20,000원");
+       holder.tvDate.setText(mDataset.get(position).getUploadDate());
+
+/*
+
+       myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+               if(snapshot.child(key).child("salesStatus").getValue().equals(true)){
+                   holder.tvSales.setVisibility(View.VISIBLE);
+                   Log.e("===================","true");
+                   Log.e("===================",key);
+               }else {
+                   Log.e("===================","flase");
+                   Log.e("===================",key);
+                   holder.tvSales.setVisibility(View.GONE);
+               }
+
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+
+           }
+       });
+
+*/
 
 
 

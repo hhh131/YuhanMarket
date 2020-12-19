@@ -16,14 +16,19 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.yuhanmarket.PostPack.WritePostActivity;
 import com.example.yuhanmarket.R;
+import com.example.yuhanmarket.TapActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +58,7 @@ public class ListFragment extends Fragment {
     DatabaseReference myRef = database.getReference("");
     private ListViewModel listViewModel;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         listViewModel =
@@ -67,7 +73,8 @@ public class ListFragment extends Fragment {
             }
         });*/
         PostImg = root.findViewById(R.id.ivUser);
-
+        ActionBar actionBar = ((TapActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("목록");
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shard", Context.MODE_PRIVATE);
         UserId= sharedPreferences.getString("UserId","");
 
@@ -77,6 +84,9 @@ public class ListFragment extends Fragment {
 
 
         layoutManager = new LinearLayoutManager(getContext());
+
+        ((LinearLayoutManager) layoutManager).setReverseLayout(true);
+        ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
 
 
@@ -95,8 +105,8 @@ public class ListFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1: snapshot.getChildren())
                 {
                     ListVO listVO = dataSnapshot1.getValue(ListVO.class);
-                    Log.e(TAG, listVO.getUserId());
-                    Log.e(TAG, listVO.getTitle());
+                  //  Log.e(TAG, listVO.getUserId());
+                  //log.e(TAG, listVO.getTitle());
                     listVO.setKey(dataSnapshot1.getKey().toString());
                     //Log.e(TAG, dataSnapshot1.getKey().toString());
                     listVOArray.add(listVO);
@@ -111,6 +121,20 @@ public class ListFragment extends Fragment {
 
             }
         });
+
+        FloatingActionButton fab = root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent  = new Intent(getContext(), WritePostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+
 
 
         return root;

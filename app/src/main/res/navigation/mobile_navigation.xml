@@ -7,14 +7,15 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.yuhanmarket.ui.ChatListPack.ChatListFragment"
+        android:name="com.example.yuhanmarket.PostListPack.ListFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_chatlist" />
 
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.yuhanmarket.PostListPack.ListFragment"
+        android:name="com.example.yuhanmarket.ui.ChatListPack.ChatListFragment"
+
         android:label="@string/title_friend"
         tools:layout="@layout/fragment_list" />
 

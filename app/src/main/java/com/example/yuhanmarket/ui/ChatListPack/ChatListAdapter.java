@@ -5,14 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yuhanmarket.ChatPack.ChatActivity;
-import com.example.yuhanmarket.PostViewActivity;
 import com.example.yuhanmarket.R;
 
 import java.util.ArrayList;
@@ -39,7 +36,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
                     Intent intent = new Intent(v.getContext(), ChatActivity.class);
                     intent.putExtra("pos",pos);
-
+                    intent.putExtra("OtherId","heekwon131");
                     //intent.putExtra("Array",mDataset);
 
                     v.getContext().startActivity(intent);

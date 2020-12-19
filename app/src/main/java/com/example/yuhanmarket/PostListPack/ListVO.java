@@ -4,8 +4,16 @@ public class ListVO {
     String UserId;
     String Title;
     String Price;
+    String uploadDate;
     String key;
 
+    public String getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(String uploadDate) {
+        this.uploadDate = uploadDate;
+    }
 
     public String getUserId() {
         return UserId;

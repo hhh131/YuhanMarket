@@ -73,6 +73,11 @@ public class LoginActivity extends Activity {
                                         }
                                         else
                                         {
+                                            SharedPreferences sharedPreferences = getSharedPreferences("shard",Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putString("UserId",etid.getText().toString());
+                                            editor.commit();
+
                                             Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
                                             intent.putExtra("UserId",etid.getText().toString());
                                             startActivity(intent);

@@ -32,12 +32,13 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
         OkBtn = (Button)findViewById(R.id.ok_btn);
         etEmailAuthNumber = (EditText)findViewById(R.id.emailAuth_number);
+
+
+
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("shard", Context.MODE_PRIVATE);
         UserId= sharedPreferences.getString("UserId","");
-
-
-
-
 
 
 
@@ -64,6 +65,9 @@ public class AuthActivity extends AppCompatActivity {
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("shard", Context.MODE_PRIVATE);
+                        UserId= sharedPreferences.getString("UserId","");
 
                         DbAuthNum=snapshot.child(UserId).child("authString").getValue().toString();
 

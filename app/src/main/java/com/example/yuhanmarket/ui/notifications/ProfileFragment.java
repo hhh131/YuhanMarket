@@ -2,6 +2,7 @@ package com.example.yuhanmarket.ui.notifications;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,21 +15,32 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.yuhanmarket.MainActivity;
 import com.example.yuhanmarket.R;
+import com.example.yuhanmarket.TapActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,11 +55,16 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel profileViewModel;
     private StorageReference mStorageRef;
     ImageView UserImg;
+    EditText etNickname;
+    Button Btn;
     String UserId;
     File localFile;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("");
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        ActionBar actionBar = ((TapActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("프로필 변경");
 
 
      /*  profileViewModel =
@@ -60,6 +77,51 @@ public class ProfileFragment extends Fragment {
                 textView.setText(s);
             }
         });*/
+
+        etNickname=root.findViewById(R.id.nick);
+        Btn = root.findViewById(R.id.btnModify);
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String nickname=snapshot.child("users").child(UserId).child("nick").getValue().toString();
+                etNickname.setText(nickname);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //String nickname=snapshot.child("users").child(UserId).child("nick").getValue().toString();
+                        for(DataSnapshot ds : snapshot.child("users").getChildren()){
+                            //ds.
+                        }
+                       String NickName=etNickname.getText().toString();
+                       myRef.child("users").child(UserId).child("nick").setValue(NickName);
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+
+        });
+
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shard",Context.MODE_PRIVATE);
         UserId= sharedPreferences.getString("UserId","");

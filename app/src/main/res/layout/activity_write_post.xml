@@ -5,27 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".WritePostActivity">
+    tools:context=".PostPack.WritePostActivity">
     <ImageView
-        android:layout_gravity="center"
+        android:src="@drawable/ic_action_name"
+        android:layout_margin="10dp"
         android:id="@+id/ivProduct"
-        android:layout_width="100dp"
-        android:layout_height="100dp"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true"
+        android:background="#999999"/>
+
+
     <EditText
         android:id="@+id/Title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:maxLength="25"
         android:hint="제목"/>
+
     <EditText
         android:id="@+id/Price"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:inputType="number"
+        android:digits="0123456789"
+        android:maxLength="12"
         android:hint="가격"/>
+
     <EditText
         android:id="@+id/Content"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:hint="내용"/>
+        android:layout_height="497dp"
+        android:textSize="20dp"
+        android:fontFamily="@font/misaeng"
+        android:gravity="top"
+        android:maxLength="300"
+        android:hint="게시글 내용을 작성해주세요(300자 미만)" />
 
     <Button
         android:id="@+id/regitBtn"
