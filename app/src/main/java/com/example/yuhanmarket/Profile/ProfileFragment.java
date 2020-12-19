@@ -79,48 +79,9 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
 
         etNickname=root.findViewById(R.id.nick);
-        Btn = root.findViewById(R.id.btnModify);
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String nickname=snapshot.child("users").child(UserId).child("nick").getValue().toString();
-                etNickname.setText(nickname);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        //String nickname=snapshot.child("users").child(UserId).child("nick").getValue().toString();
-                        for(DataSnapshot ds : snapshot.child("users").getChildren()){
-                            //ds.
-                        }
-                       String NickName=etNickname.getText().toString();
-                       myRef.child("users").child(UserId).child("nick").setValue(NickName);
 
 
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-            }
-
-        });
 
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shard",Context.MODE_PRIVATE);

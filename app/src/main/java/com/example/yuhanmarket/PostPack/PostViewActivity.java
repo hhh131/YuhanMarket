@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yuhanmarket.ChatPack.ChatActivity;
+import com.example.yuhanmarket.ChatPack.test;
 import com.example.yuhanmarket.PostListPack.ListAdapter;
 import com.example.yuhanmarket.PostListPack.ListVO;
 import com.example.yuhanmarket.R;
@@ -131,9 +132,9 @@ public class  PostViewActivity extends AppCompatActivity {
                           myRef.child(key).child("salesStatus").setValue(true);
                         }
                         else{
-                            Intent intent =new Intent(getApplicationContext(), ChatActivity.class);
+                            Intent intent =new Intent(getApplicationContext(), test.class);
 
-                            intent.putExtra("OtherId", postVO.getUserId());
+                            intent.putExtra("OtherId", postVO.userId);
                             intent.putExtra("UserId",PostId);
                             startActivity(intent);
 

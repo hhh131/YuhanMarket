@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+
 public class test extends Activity {
     private static final String TAG = "ChatActivity";
     private RecyclerView recyclerView;
@@ -38,7 +39,7 @@ public class test extends Activity {
     private RecyclerView.LayoutManager layoutManager;
     EditText editText;
     ImageButton bntSend;
-    String UserId, OtherId, RoomId;
+    String UserId, OtherId, RoomNum;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     ArrayList<Chat> ChatArray;
@@ -79,7 +80,7 @@ public class test extends Activity {
 
         RoomName = ChatRoom.get("OtherId") + ChatRoom.get("UserId");
 
-       /* ChildEventListener childEventListener = new ChildEventListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
@@ -130,8 +131,7 @@ public class test extends Activity {
             }
         };
         DatabaseReference ref = database.getReference("Chat").child(RoomName);
-        ref.addChildEventListener(childEventListener);*/
-
+        ref.addChildEventListener(childEventListener);
 
         bntSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,62 +145,34 @@ public class test extends Activity {
 
                 myRef = database.getReference("Chat");
 
-                ChatModel chatModel = new ChatModel();
-                chatModel.users.put(UserId,true);
-                chatModel.users.put(OtherId,true);
-                Map<String, String> comments = new HashMap<>();//채팅방 대화내용
 
 
-                comments.put("UserId",UserId);
-                comments.put("Message",stText);
-
-           /*     ChatModel.Comment comment = new ChatModel.Comment();
-                comment.uid="myid";
-                comment.message="mymessage";*/
-
-
-
-                myRef.child(RoomId).child("comments").push().setValue(comments);
-/*                Chat chat = new Chat();
-                chat.users.put(UserId,true);
-                chat.users.put(OtherId,true);
-                chat.UserId=UserId;
-                chat.text=stText;
-                chat.date=datetime;*/
-
-
-
-
-            /*    Hashtable<String, String> comment
+                Hashtable<String, String> comment
                         = new Hashtable<String, String>();
                 comment.put("UserId", UserId);
                 comment.put("text", stText);
                 comment.put("time", datetime);
-*/
+
 
 
                 // String Roomkey= myRef.child(RoomName).push().getKey();
 
                 // myRef.child(RoomName).setValue(ChatRoom);
-                myRef.child(RoomName).push().setValue(chatModel);
+                myRef.child(RoomName).push().setValue(comment);
 
             }
         });
-        checkChatRoom();
     }
 
-    void checkChatRoom()
-    {
-        database.getReference("Chat").orderByChild("users/"+UserId).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+    void ChatRoomCheck() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot item : dataSnapshot.getChildren()){
-                    ChatModel chatModel=item.getValue(ChatModel.class);
-                    if(chatModel.users.containsKey(OtherId)){
-                        RoomId=item.getKey();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
                 }
+
             }
 
             @Override
@@ -210,3 +182,4 @@ public class test extends Activity {
         });
     }
 }
+
